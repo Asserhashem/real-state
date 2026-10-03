@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>برايت فيجن للعقارات | Bright Vision Real Estate</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+
+    :root {
+      --primary: #0a192f;
+      --primary-light: #172a45;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --danger: #ef4444;
+      --edit: #f59e0b;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* Header */
+    header { background: var(--primary); color: white; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 1.6rem; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 8px; letter-spacing: -0.5px; }
+
+    /* Hero Section */
+    .hero { background: linear-gradient(rgba(10, 25, 47, 0.88), rgba(10, 25, 47, 0.88)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat; color: white; text-align: center; padding: 100px 20px; }
+    .hero h1 { font-size: 3rem; margin-bottom: 15px; font-weight: 800; letter-spacing: -0.5px; }
+    .hero p { font-size: 1.25rem; color: #94a3b8; max-width: 650px; margin: 0 auto; font-weight: 500; }
+
+    /* Main Container */
+    .container { max-width: 1280px; margin: 50px auto; padding: 0 24px; flex: 1; width: 100%; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; }
+    .section-title { font-size: 2rem; font-weight: 800; color: var(--primary); }
+
+    /* Admin Panel */
+    .admin-card { background: var(--card-bg); border: 2px solid #38bdf8; border-radius: 16px; padding: 30px; margin-bottom: 50px; box-shadow: var(--shadow-md); }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 20px; }
+    input { width: 100%; padding: 14px 18px; border: 1.5px solid var(--border-color); border-radius: 10px; font-size: 15px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #f8fafc; }
+    input:focus { border-color: var(--accent); background: #ffffff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+
+    /* Properties Grid - العالمي (العقارات جنب بعضها) */
+    .properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px; }
+    
+    /* Property Card Layout */
+    .property-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; position: relative; }
+    .property-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: #cbd5e1; }
+    
+    .property-img-wrapper { width: 100%; height: 230px; overflow: hidden; position: relative; background: #e2e8f0; }
+    .property-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .property-card:hover .property-img { transform: scale(1.05); }
+
+    .property-body { padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+    
+    /* الترتيب الجديد المطلوب: الاسم ثم السعر ثم الموقع */
+    .property-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .property-price { font-size: 1.35rem; font-weight: 800; color: var(--accent); display: flex; align-items: center; gap: 4px; }
+    .property-location { font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; font-weight: 500; }
+
+    /* Card Actions for Admin */
+    .card-actions { display: flex; gap: 10px; padding: 0 22px 22px 22px; border-top: 1px solid #f1f5f9; padding-top: 16px; }
+
+    /* Buttons */
+    .btn { padding: 12px 22px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; font-size: 15px; text-align: center; display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn-primary { background-color: var(--accent); color: white; }
+    .btn-primary:hover { background-color: var(--accent-hover); transform: translateY(-1px); }
+    .btn-danger { background-color: var(--danger); color: white; }
+    .btn-danger:hover { background-color: #dc2626; }
+    .btn-edit { background-color: var(--edit); color: white; }
+    .btn-edit:hover { background-color: #d97706; }
+
+    /* Footer */
+    footer { background: var(--primary); color: #94a3b8; text-align: center; padding: 35px 20px; font-size: 0.95rem; margin-top: auto; border-top: 1px solid var(--primary-light); }
+    .admin-link { color: #64748b; text-decoration: none; font-size: 0.85rem; cursor: pointer; transition: color 0.2s; margin-top: 10px; display: inline-block; font-weight: 500; }
+    .admin-link:hover { color: #38bdf8; }
+
+    /* Modal Overlay */
+    .hidden { display: none !important; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 25, 47, 0.75); display: flex; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(6px); }
+    .modal { background: white; padding: 35px; border-radius: 18px; width: 100%; max-width: 420px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">Bright Vision 🏠</div>
+    <div id="adminHeaderBadge" class="hidden" style="display: flex; align-items: center; gap: 15px;">
+      <span style="font-size: 0.9rem; color: #38bdf8; font-weight: 700;">وضع الأدمن نشط ⚡</span>
+      <button id="logoutBtn" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px;">تسجيل خروج</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>استكشف عقارك القادم مع برايت فيجن</h1>
+    <p>مجموعتك المختارة من أرقى العقارات والوحدات السكنية والتجارية بأعلى جودة وتصميمات عالمية.</p>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container">
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-card hidden">
+      <h3 id="panelTitle" style="color: var(--primary); font-size: 1.4rem;">إضافة عقار جديد ➕</h3>
+      <div class="form-grid">
+        <input type="text" id="titleInput" placeholder="عنوان العقار (مثال: فيلا فاخرة بمسبح خاص)">
+        <input type="text" id="priceInput" placeholder="السعر (مثال: 4,500,000 ج.م)">
+        <input type="text" id="locationInput" placeholder="الموقع (مثال: الإسكندرية، المنتزه)">
+        <input type="text" id="imageInput" placeholder="رابط صورة العقار (URL)">
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button id="savePropertyBtn" class="btn btn-primary" style="flex: 1;">حفظ العقار</button>
+        <button id="cancelEditBtn" class="btn hidden" style="background: #e2e8f0; color: #475569;">إلغاء التعديل</button>
+      </div>
+    </div>
+
+    <!-- Properties Showcase Section -->
+    <div class="section-header">
+      <h2 class="section-title">العقارات المتاحة</h2>
+    </div>
+    <div id="propertiesGrid" class="properties-grid">
+      <!-- يتم عرض البطاقات هنا جنبًا إلى جنب بتنسيق متناسق -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Bright Vision Real Estate. جميع الحقوق محفوظة.</p>
+    <span id="openAdminModalLink" class="admin-link">تسجيل دخول الإدارة 🔐</span>
+  </footer>
+
+  <!-- Admin Login Modal -->
+  <div id="loginModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3 style="margin-bottom: 20px; text-align: center; color: var(--primary); font-size: 1.4rem;">لوحة دخول الأدمن</h3>
+      <input type="email" id="emailInput" placeholder="البريد الإلكتروني" style="margin-bottom: 14px;">
+      <input type="password" id="passwordInput" placeholder="كلمة السر" style="margin-bottom: 22px;">
+      <div style="display: flex; gap: 12px;">
+        <button id="loginBtn" class="btn btn-primary" style="flex: 1;">دخول</button>
+        <button id="closeLoginModalBtn" class="btn" style="background: #f1f5f9; color: #475569;">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_Dao5YPaO_R7R3vdUd5I0S_SwhJkfKNY",
+      authDomain: "asser-bac98.firebaseapp.com",
+      projectId: "asser-bac98",
+      storageBucket: "asser-bac98.firebasestorage.app",
+      messagingSenderId: "959590471224",
+      appId: "1:959590471224:web:e9f83efb17465d6015b8cd",
+      measurementId: "G-ZW4XEC6S49"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentEditId = null;
+
+    // DOM Elements
+    const openAdminModalLink = document.getElementById("openAdminModalLink");
+    const closeLoginModalBtn = document.getElementById("closeLoginModalBtn");
+    const loginModal = document.getElementById("loginModal");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const adminHeaderBadge = document.getElementById("adminHeaderBadge");
+    const adminPanel = document.getElementById("adminPanel");
+    const savePropertyBtn = document.getElementById("savePropertyBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const panelTitle = document.getElementById("panelTitle");
+    const propertiesGrid = document.getElementById("propertiesGrid");
+
+    openAdminModalLink.addEventListener("click", () => loginModal.classList.remove("hidden"));
+    closeLoginModalBtn.addEventListener("click", () => loginModal.classList.add("hidden"));
+
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("emailInput").value;
+      const password = document.getElementById("passwordInput").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        loginModal.classList.add("hidden");
+        document.getElementById("emailInput").value = "";
+        document.getElementById("passwordInput").value = "";
+      } catch (error) {
+        alert("بيانات الدخول غير صحيحة!");
+      }
+    });
+
+    logoutBtn.addEventListener("click", () => signOut(auth));
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        adminPanel.classList.remove("hidden");
+        adminHeaderBadge.classList.remove("hidden");
+        openAdminModalLink.classList.add("hidden");
+      } else {
+        adminPanel.classList.add("hidden");
+        adminHeaderBadge.classList.add("hidden");
+        openAdminModalLink.classList.remove("hidden");
+        resetForm();
+      }
+    });
+
+    savePropertyBtn.addEventListener("click", async () => {
+      const title = document.getElementById("titleInput").value;
+      const price = document.getElementById("priceInput").value;
+      const location = document.getElementById("locationInput").value;
+      const imageUrl = document.getElementById("imageInput").value || "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80";
+
+      if (!title || !price) {
+        alert("برجاء إدخال اسم العقار والسعر!");
+        return;
+      }
+
+      try {
+        if (currentEditId) {
+          await updateDoc(doc(db, "properties", currentEditId), { title, price, location, imageUrl });
+          alert("تم تعديل بيانات العقار بنجاح!");
+        } else {
+          await addDoc(collection(db, "properties"), { title, price, location, imageUrl, createdAt: new Date() });
+          alert("تم إضافة العقار بنجاح!");
+        }
+        resetForm();
+      } catch (error) {
+        alert("حدث خطأ: " + error.message);
+      }
+    });
+
+    cancelEditBtn.addEventListener("click", resetForm);
+
+    function resetForm() {
+      currentEditId = null;
+      document.getElementById("titleInput").value = "";
+      document.getElementById("priceInput").value = "";
+      document.getElementById("locationInput").value = "";
+      document.getElementById("imageInput").value = "";
+      panelTitle.innerText = "إضافة عقار جديد ➕";
+      savePropertyBtn.innerText = "حفظ العقار";
+      cancelEditBtn.classList.add("hidden");
+    }
+
+    // Realtime Database Read & Rendering
+    onSnapshot(collection(db, "properties"), (snapshot) => {
+      propertiesGrid.innerHTML = "";
+
+      if (snapshot.empty) {
+        propertiesGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 1.1rem; padding: 40px 0;">لا توجد عقارات مضافة حالياً.</p>`;
+        return;
+      }
+
+      const defaultImg = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80";
+
+      snapshot.forEach((docSnap) => {
+        const item = docSnap.data();
+        const id = docSnap.id;
+
+        const card = document.createElement("div");
+        card.className = "property-card";
+
+        // بناء بطاقة العقار: الاسم أولاً ثم السعر تحته مباشرة ثم الموقع
+        card.innerHTML = `
+          <div class="property-img-wrapper">
+            <img src="${item.imageUrl || defaultImg}" class="property-img" alt="${item.title || ''}" onerror="this.src='${defaultImg}'">
+          </div>
+          <div class="property-body">
+            <div class="property-title">${item.title || ''}</div>
+            <div class="property-price">${item.price || ''}</div>
+            <div class="property-location">📍 ${item.location || 'غير محدد'}</div>
+          </div>
+        `;
+
+        // إضافة أزرار الأدمن عند تسجيل الدخول
+        if (auth.currentUser) {
+          const actionsDiv = document.createElement("div");
+          actionsDiv.className = "card-actions";
+
+          const editBtn = document.createElement("button");
+          editBtn.className = "btn btn-edit";
+          editBtn.style.flex = "1";
+          editBtn.innerText = "تعديل ✏️";
+          editBtn.addEventListener("click", () => {
+            startEdit(id, item.title, item.price, item.location || '', item.imageUrl || '');
+          });
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "btn btn-danger";
+          deleteBtn.style.flex = "1";
+          deleteBtn.innerText = "حذف 🗑️";
+          deleteBtn.addEventListener("click", () => {
+            deleteProp(id);
+          });
+
+          actionsDiv.appendChild(editBtn);
+          actionsDiv.appendChild(deleteBtn);
+          card.appendChild(actionsDiv);
+        }
+
+        propertiesGrid.appendChild(card);
+      });
+    });
+
+    function startEdit(id, title, price, location, imageUrl) {
+      currentEditId = id;
+      document.getElementById("titleInput").value = title;
+      document.getElementById("priceInput").value = price;
+      document.getElementById("locationInput").value = location;
+      document.getElementById("imageInput").value = imageUrl;
+      
+      panelTitle.innerText = "تعديل بيانات العقار ✏️";
+      savePropertyBtn.innerText = "تحديث البيانات";
+      cancelEditBtn.classList.remove("hidden");
+      window.scrollTo({ top: adminPanel.offsetTop - 20, behavior: 'smooth' });
+    }
+
+    async function deleteProp(id) {
+      if (confirm("هل أنت متأكد من حذف هذا العقار نهائياً؟")) {
+        await deleteDoc(doc(db, "properties", id));
+      }
+    }
+  </script>
+</body>
+</html>
